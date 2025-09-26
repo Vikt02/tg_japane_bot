@@ -2,6 +2,9 @@
 Телеграм-бот для изучения японских иероглифов
 """
 
+from collections import defaultdict
+from math import log, atan
+import numpy as np
 import os
 import random
 import logging
@@ -54,7 +57,9 @@ class JapaneseBotState:
                 'all_user_answer_message_ids': [],
                 'all_stats_message_ids': [],
                 'all_main_menu_message_ids': [],
-                'all_submenu_message_ids': []
+                'all_submenu_message_ids': [],
+                # История ответов пользователя по иероглифам
+                'symbols_stats': defaultdict(int)
             }
         return self.user_sessions[user_id]
 
@@ -102,6 +107,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     session['all_stats_message_ids'] = []
     session['all_main_menu_message_ids'] = []
     session['all_submenu_message_ids'] = []
+    # Очищаем статистику по иероглифам
+    session['symbols_stats'] = defaultdict(int)
     
     welcome_message = (
         f"Привет, {user.first_name}! 👋\n\n"
@@ -290,6 +297,18 @@ async def show_katakana_menu(update: Update, context: ContextTypes.DEFAULT_TYPE)
     session['submenu_message_id'] = message.message_id
     session['all_submenu_message_ids'].append(message.message_id)
 
+def get_weight(delta: float) -> float:
+    if delta >= 0:
+        return 1.0 / (log(delta + 1)**2 + 1)
+    return atan(-delta) + 1
+
+def sample_symbol(stats: dict, symbols: list[str]) -> str:
+    deltas = [float(stats[symbol]) for symbol in symbols]
+    weights = [get_weight(delta) for delta in deltas]
+    sum_weights = sum(weights)
+    probas = [weight / sum_weights for weight in weights]
+    return np.random.choice(symbols, p=probas)
+
 
 async def start_quiz(update: Update, context: ContextTypes.DEFAULT_TYPE, quiz_type: str = None) -> None:
     """Начинает новый вопрос викторины"""
@@ -317,7 +336,7 @@ async def start_quiz(update: Update, context: ContextTypes.DEFAULT_TYPE, quiz_ty
     data = quiz_info['data']
     
     # Выбираем случайный символ
-    symbol = random.choice(list(data.keys()))
+    symbol = sample_symbol(session['symbol_stats'], data.keys())
     session['current_symbol'] = symbol
     session['waiting_for_answer'] = True
     
@@ -460,8 +479,10 @@ async def handle_answer(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
     
     if is_correct:
         session['score'] += 1
+        session['symbol_stats'][current_symbol] += 1
         response = f"✅ Правильно!\n\n"
     else:
+        session['symbol_stats'][current_symbol] -= 1
         response = f"❌ Неправильно!\n\n"
     
     # Формируем детальную информацию о символе
@@ -545,8 +566,10 @@ async def handle_button_answer(update: Update, context: ContextTypes.DEFAULT_TYP
     
     if is_correct:
         session['score'] += 1
+        session['symbol_stats'][current_symbol] += 1
         response = f"✅ Правильно!\n\n"
     else:
+        session['symbol_stats'][current_symbol] -= 1
         response = f"❌ Неправильно!\n\n"
     
     # Формируем детальную информацию о символе
