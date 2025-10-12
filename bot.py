@@ -336,7 +336,7 @@ async def start_quiz(update: Update, context: ContextTypes.DEFAULT_TYPE, quiz_ty
     data = quiz_info['data']
     
     # Выбираем случайный символ
-    symbol = sample_symbol(session['symbol_stats'], data.keys())
+    symbol = sample_symbol(session['symbols_stats'], list(data.keys()))
     session['current_symbol'] = symbol
     session['waiting_for_answer'] = True
     
@@ -479,10 +479,10 @@ async def handle_answer(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
     
     if is_correct:
         session['score'] += 1
-        session['symbol_stats'][current_symbol] += 1
+        session['symbols_stats'][current_symbol] += 1
         response = f"✅ Правильно!\n\n"
     else:
-        session['symbol_stats'][current_symbol] -= 1
+        session['symbols_stats'][current_symbol] -= 1
         response = f"❌ Неправильно!\n\n"
     
     # Формируем детальную информацию о символе
@@ -566,10 +566,10 @@ async def handle_button_answer(update: Update, context: ContextTypes.DEFAULT_TYP
     
     if is_correct:
         session['score'] += 1
-        session['symbol_stats'][current_symbol] += 1
+        session['symbols_stats'][current_symbol] += 1
         response = f"✅ Правильно!\n\n"
     else:
-        session['symbol_stats'][current_symbol] -= 1
+        session['symbols_stats'][current_symbol] -= 1
         response = f"❌ Неправильно!\n\n"
     
     # Формируем детальную информацию о символе
