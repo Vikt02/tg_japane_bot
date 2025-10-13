@@ -202,13 +202,39 @@ async def show_hiragana_basic_menu(update: Update, context: ContextTypes.DEFAULT
         "🈶 **Базовая хирагана** (46 символов)\n\n"
         "Выбери режим викторины:\n\n"
         "**Символ → Romaji**: Видишь символ хираганы, пишешь его чтение латиницей\n"
-        "**Romaji → Символ**: Видишь чтение латиницей, выбираешь правильный символ из кнопок"
+        "**Romaji → Символ**: Видишь чтение латиницей, отвечаешь на символ"
     )
     
     keyboard = [
         [InlineKeyboardButton("🈶 → 🔤 Символ → Romaji", callback_data="quiz_hiragana_to_romaji")],
-        [InlineKeyboardButton("🔤 → 🈶 Romaji → Символ", callback_data="quiz_romaji_to_hiragana")],
+        [InlineKeyboardButton("🔤 → 🈶 Romaji → Символ", callback_data="hiragana_basic_romaji_menu")],
         [InlineKeyboardButton("🔙 Назад", callback_data="menu_hiragana")]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    
+    message = await query.message.reply_text(menu_message, reply_markup=reply_markup, parse_mode='Markdown')
+    session['submenu_message_id'] = message.message_id
+    session['all_submenu_message_ids'].append(message.message_id)
+
+
+async def show_hiragana_basic_romaji_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Показывает подменю для выбора режима Romaji → Хирагана"""
+    query = update.callback_query
+    user_id = query.from_user.id
+    session = bot_state.get_user_session(user_id)
+    await query.answer()
+    
+    menu_message = (
+        "🔤 → 🈶 **Romaji → Базовая хирагана**\n\n"
+        "Выбери режим ответа:\n\n"
+        "**С кнопками**: Выбираешь правильный символ из 4 вариантов\n"
+        "**С вводом**: Печатаешь символ самостоятельно"
+    )
+    
+    keyboard = [
+        [InlineKeyboardButton("🔘 С кнопками", callback_data="quiz_romaji_to_hiragana")],
+        [InlineKeyboardButton("⌨️ С вводом", callback_data="quiz_romaji_to_hiragana_input")],
+        [InlineKeyboardButton("🔙 Назад", callback_data="hiragana_basic_menu")]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
     
@@ -234,8 +260,34 @@ async def show_hiragana_dakuten_menu(update: Update, context: ContextTypes.DEFAU
     
     keyboard = [
         [InlineKeyboardButton("🈶゛゜ → 🔤 Символ → Romaji", callback_data="quiz_hiragana_dakuten_to_romaji")],
-        [InlineKeyboardButton("🔤 → 🈶゛゜ Romaji → Символ", callback_data="quiz_romaji_to_hiragana_dakuten")],
+        [InlineKeyboardButton("🔤 → 🈶゛゜ Romaji → Символ", callback_data="hiragana_dakuten_romaji_menu")],
         [InlineKeyboardButton("🔙 Назад", callback_data="menu_hiragana")]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    
+    message = await query.message.reply_text(menu_message, reply_markup=reply_markup, parse_mode='Markdown')
+    session['submenu_message_id'] = message.message_id
+    session['all_submenu_message_ids'].append(message.message_id)
+
+
+async def show_hiragana_dakuten_romaji_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Показывает подменю для выбора режима Romaji → Хирагана с тэнтэн/мару"""
+    query = update.callback_query
+    user_id = query.from_user.id
+    session = bot_state.get_user_session(user_id)
+    await query.answer()
+    
+    menu_message = (
+        "🔤 → 🈶゛゜ **Romaji → Тэнтэн/Мару**\n\n"
+        "Выбери режим ответа:\n\n"
+        "**С кнопками**: Выбираешь правильный символ из 4 вариантов\n"
+        "**С вводом**: Печатаешь символ самостоятельно"
+    )
+    
+    keyboard = [
+        [InlineKeyboardButton("🔘 С кнопками", callback_data="quiz_romaji_to_hiragana_dakuten")],
+        [InlineKeyboardButton("⌨️ С вводом", callback_data="quiz_romaji_to_hiragana_dakuten_input")],
+        [InlineKeyboardButton("🔙 Назад", callback_data="hiragana_dakuten_menu")]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
     
@@ -262,8 +314,34 @@ async def show_hiragana_full_menu(update: Update, context: ContextTypes.DEFAULT_
     
     keyboard = [
         [InlineKeyboardButton("🈶📖 → 🔤 Символ → Romaji", callback_data="quiz_hiragana_full_to_romaji")],
-        [InlineKeyboardButton("🔤 → 🈶📖 Romaji → Символ", callback_data="quiz_romaji_to_hiragana_full")],
+        [InlineKeyboardButton("🔤 → 🈶📖 Romaji → Символ", callback_data="hiragana_full_romaji_menu")],
         [InlineKeyboardButton("🔙 Назад", callback_data="menu_hiragana")]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    
+    message = await query.message.reply_text(menu_message, reply_markup=reply_markup, parse_mode='Markdown')
+    session['submenu_message_id'] = message.message_id
+    session['all_submenu_message_ids'].append(message.message_id)
+
+
+async def show_hiragana_full_romaji_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Показывает подменю для выбора режима Romaji → Полная хирагана"""
+    query = update.callback_query
+    user_id = query.from_user.id
+    session = bot_state.get_user_session(user_id)
+    await query.answer()
+    
+    menu_message = (
+        "🔤 → 🈶📖 **Romaji → Полная хирагана**\n\n"
+        "Выбери режим ответа:\n\n"
+        "**С кнопками**: Выбираешь правильный символ из 4 вариантов\n"
+        "**С вводом**: Печатаешь символ самостоятельно"
+    )
+    
+    keyboard = [
+        [InlineKeyboardButton("🔘 С кнопками", callback_data="quiz_romaji_to_hiragana_full")],
+        [InlineKeyboardButton("⌨️ С вводом", callback_data="quiz_romaji_to_hiragana_full_input")],
+        [InlineKeyboardButton("🔙 Назад", callback_data="hiragana_full_menu")]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
     
@@ -283,13 +361,39 @@ async def show_katakana_menu(update: Update, context: ContextTypes.DEFAULT_TYPE)
         "🈯 **Катакана** (46 символов)\n\n"
         "Выбери режим викторины:\n\n"
         "**Символ → Romaji**: Видишь символ катаканы, пишешь его чтение латиницей\n"
-        "**Romaji → Символ**: Видишь чтение латиницей, выбираешь правильный символ из кнопок"
+        "**Romaji → Символ**: Видишь чтение латиницей, отвечаешь на символ"
     )
     
     keyboard = [
         [InlineKeyboardButton("🈯 → 🔤 Символ → Romaji", callback_data="quiz_katakana_to_romaji")],
-        [InlineKeyboardButton("🔤 → 🈯 Romaji → Символ", callback_data="quiz_romaji_to_katakana")],
+        [InlineKeyboardButton("🔤 → 🈯 Romaji → Символ", callback_data="katakana_romaji_menu")],
         [InlineKeyboardButton("🔙 Назад", callback_data="back_to_menu")]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    
+    message = await query.message.reply_text(menu_message, reply_markup=reply_markup, parse_mode='Markdown')
+    session['submenu_message_id'] = message.message_id
+    session['all_submenu_message_ids'].append(message.message_id)
+
+
+async def show_katakana_romaji_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Показывает подменю для выбора режима Romaji → Катакана"""
+    query = update.callback_query
+    user_id = query.from_user.id
+    session = bot_state.get_user_session(user_id)
+    await query.answer()
+    
+    menu_message = (
+        "🔤 → 🈯 **Romaji → Катакана**\n\n"
+        "Выбери режим ответа:\n\n"
+        "**С кнопками**: Выбираешь правильный символ из 4 вариантов\n"
+        "**С вводом**: Печатаешь символ самостоятельно"
+    )
+    
+    keyboard = [
+        [InlineKeyboardButton("🔘 С кнопками", callback_data="quiz_romaji_to_katakana")],
+        [InlineKeyboardButton("⌨️ С вводом", callback_data="quiz_romaji_to_katakana_input")],
+        [InlineKeyboardButton("🔙 Назад", callback_data="menu_katakana")]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
     
@@ -365,7 +469,7 @@ async def start_quiz(update: Update, context: ContextTypes.DEFAULT_TYPE, quiz_ty
     
     # Создаем клавиатуру в зависимости от типа викторины
     if quiz_info['answer_type'] == "symbol":
-        # Для режимов Romaji→Символ создаем кнопки с вариантами ответов
+        # Для режимов Romaji→Символ с кнопками создаем кнопки с вариантами ответов
         wrong_answers = generate_wrong_answers(symbol, current_quiz_type, 3)
         all_answers = [symbol] + wrong_answers
         random.shuffle(all_answers)
@@ -383,7 +487,7 @@ async def start_quiz(update: Update, context: ContextTypes.DEFAULT_TYPE, quiz_ty
         # Добавляем кнопки навигации
         keyboard.append([InlineKeyboardButton("🔙 Выбрать другой тип", callback_data="back_to_menu")])
     else:
-        # Для остальных режимов обычные кнопки
+        # Для остальных режимов (romaji, meaning, symbol_input) обычные кнопки
         keyboard = [
             [InlineKeyboardButton("🔄 Следующий вопрос", callback_data=f"next_{current_quiz_type}")],
             [InlineKeyboardButton("🔙 Выбрать другой тип", callback_data="back_to_menu")]
@@ -445,7 +549,7 @@ async def handle_answer(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
     current_quiz_type = session.get('current_quiz_type')
     if current_quiz_type:
         quiz_info = QUIZ_TYPES[current_quiz_type]
-        # Если это режим с кнопками, игнорируем текстовые сообщения
+        # Если это режим с кнопками (не с вводом), игнорируем текстовые сообщения
         if quiz_info['answer_type'] == "symbol":
             await update.message.reply_text(
                 "Для этого режима используй кнопки с вариантами ответов! 👆"
@@ -470,7 +574,11 @@ async def handle_answer(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
     elif quiz_info['answer_type'] == "romaji":
         correct_answer = symbol_data['romaji'].lower()
         is_correct = user_answer == correct_answer
-    else:  # answer_type == "symbol"
+    elif quiz_info['answer_type'] == "symbol_input":
+        # Для режима ввода символа
+        correct_answer = current_symbol
+        is_correct = user_answer == correct_answer
+    else:  # answer_type == "symbol" (с кнопками)
         correct_answer = current_symbol
         is_correct = user_answer == correct_answer
     
@@ -504,7 +612,9 @@ async def handle_answer(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
             response += f"Правильный ответ: {symbol_data['meaning']}\n"
         elif quiz_info['answer_type'] == "romaji":
             response += f"Правильный ответ: {symbol_data['romaji']}\n"
-        else:  # answer_type == "symbol"
+        elif quiz_info['answer_type'] == "symbol_input":
+            response += f"Правильный ответ: {current_symbol}\n"
+        else:  # answer_type == "symbol" (с кнопками)
             response += f"Правильный ответ: {current_symbol}\n"
         response += f"Твой ответ: {update.message.text}\n"
     
@@ -804,6 +914,14 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
         await show_hiragana_full_menu(update, context)
     elif query.data == "menu_katakana":
         await show_katakana_menu(update, context)
+    elif query.data == "hiragana_basic_romaji_menu":
+        await show_hiragana_basic_romaji_menu(update, context)
+    elif query.data == "hiragana_dakuten_romaji_menu":
+        await show_hiragana_dakuten_romaji_menu(update, context)
+    elif query.data == "hiragana_full_romaji_menu":
+        await show_hiragana_full_romaji_menu(update, context)
+    elif query.data == "katakana_romaji_menu":
+        await show_katakana_romaji_menu(update, context)
 
 
 def main() -> None:
