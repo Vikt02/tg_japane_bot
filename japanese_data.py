@@ -267,7 +267,7 @@ QUIZ_TYPES = {
         "show_symbol": True
     },
     "romaji_to_hiragana": {
-        "name": "🔤 Romaji → Хирагана",
+        "name": "🔤 Romaji → Хирагана (кнопки)",
         "data": HIRAGANA_DATA,
         "folder": "data/hiragana",
         "question": "Какой символ хираганы соответствует этому чтению?",
@@ -285,7 +285,7 @@ QUIZ_TYPES = {
         "show_symbol": True
     },
     "romaji_to_hiragana_dakuten": {
-        "name": "🔤 Romaji → Тэнтэн/Мару",
+        "name": "🔤 Romaji → Тэнтэн/Мару (кнопки)",
         "data": HIRAGANA_DAKUTEN_DATA,
         "folder": "data/hiragana_dakuten",
         "question": "Какой символ хираганы с тэнтэн/мару соответствует этому чтению?",
@@ -303,7 +303,7 @@ QUIZ_TYPES = {
         "show_symbol": True
     },
     "romaji_to_hiragana_full": {
-        "name": "🔤 Romaji → Полная Хирагана",
+        "name": "🔤 Romaji → Полная Хирагана (кнопки)",
         "data": HIRAGANA_FULL_DATA,
         "folder": "data/hiragana_full",
         "question": "Какой символ хираганы соответствует этому чтению?",
@@ -321,11 +321,45 @@ QUIZ_TYPES = {
         "show_symbol": True
     },
     "romaji_to_katakana": {
-        "name": "🔤 Romaji → Катакана",
+        "name": "🔤 Romaji → Катакана (кнопки)",
         "data": KATAKANA_DATA,
         "folder": "data/katakana",
         "question": "Какой символ катаканы соответствует этому чтению?",
         "answer_type": "symbol",
+        "show_symbol": False
+    },
+    
+    # Режимы с вводом символа
+    "romaji_to_hiragana_input": {
+        "name": "🔤 Romaji → Хирагана (ввод)",
+        "data": HIRAGANA_DATA,
+        "folder": "data/hiragana",
+        "question": "Какой символ хираганы соответствует этому чтению?",
+        "answer_type": "symbol_input",
+        "show_symbol": False
+    },
+    "romaji_to_hiragana_dakuten_input": {
+        "name": "🔤 Romaji → Тэнтэн/Мару (ввод)",
+        "data": HIRAGANA_DAKUTEN_DATA,
+        "folder": "data/hiragana_dakuten",
+        "question": "Какой символ хираганы с тэнтэн/мару соответствует этому чтению?",
+        "answer_type": "symbol_input",
+        "show_symbol": False
+    },
+    "romaji_to_hiragana_full_input": {
+        "name": "🔤 Romaji → Полная Хирагана (ввод)",
+        "data": HIRAGANA_FULL_DATA,
+        "folder": "data/hiragana_full",
+        "question": "Какой символ хираганы соответствует этому чтению?",
+        "answer_type": "symbol_input",
+        "show_symbol": False
+    },
+    "romaji_to_katakana_input": {
+        "name": "🔤 Romaji → Катакана (ввод)",
+        "data": KATAKANA_DATA,
+        "folder": "data/katakana",
+        "question": "Какой символ катаканы соответствует этому чтению?",
+        "answer_type": "symbol_input",
         "show_symbol": False
     }
 }
